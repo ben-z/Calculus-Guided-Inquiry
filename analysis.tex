@@ -1,0 +1,237 @@
+%----------------------------------------------------------------------------------------
+%	ANALYSIS
+%----------------------------------------------------------------------------------------
+
+\section*{Analysis of Data}
+
+\subsubsection*{Theoretical}
+\label{subs:Theoretical}
+
+To explain the behavior of the ball's acceleration relative to $\theta$, the theoretical data should first be considered. Since gravity, $g$, is approximately $9.8\;m/s^2$ on the surface of the earth, the composite acceleration at any angle relative to horizontal can be found using the following equation:
+
+\begin{equation}
+  a = 9.8\sin{\theta}
+\end{equation}
+
+\begin{table}[H]
+  \centering
+  \csvloop{
+    file={assets/Data/Theoretical-Angle_Time_Acceleration_Horizontal.csv},
+    no head,              % no special treatment of first line
+    column count=10,       % since no first line is given, tell about column count
+    before reading=\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|}\hline,
+    command=\csvlinetotablerow,
+    late after line=\\\hline,
+    % late after first line=\\\hline,
+    % late after last line=\\\hline,
+    after reading=\end{tabular}
+  }
+  \caption{Theoretical Data}
+  \label{table:theoretical_data_table}
+\end{table}
+
+% Side-by-side graphs
+%
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        xlabel={$\theta$ (\textdegree)},
+        ylabel={Acceleration ($m/s^2$)},
+        xmin = 0, ymin=0,
+        scale only axis,
+        width=0.8\textwidth,
+        y label style={at={(axis description cs:0.08,.5)}},
+        ]
+        \addplot [black,mark = *] table [header=true, x=Angle, y=Acceleration, col sep=comma] {assets/Data/Theoretical-All_Vertical.csv};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Acceleration vs $\theta$}
+    \label{fig:theoretical_data_theta_plot}
+  \end{minipage}
+  \quad
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        xlabel={$\sin{\theta}$},
+        ylabel={Acceleration ($m/s^2$)},
+        xmin = 0, ymin=0,
+        scale only axis,
+        width=0.8\textwidth,
+        y label style={at={(axis description cs:0.08,.5)}},
+        ]
+        \addplot [black,mark = *] table [header=true, x=SinAngle, y=Acceleration, col sep=comma] {assets/Data/Theoretical-All_Vertical.csv};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Acceleration vs $\sin{\theta}$}
+    \label{fig:theoretical_data_sintheta_plot}
+  \end{minipage}
+\end{figure}
+%
+% End Side-by-side graphs
+
+When the acceleration vs $\theta$ graph is plotted (Figure \ref{fig:theoretical_data_theta_plot}), the resulting curve looks like a portion of a sinusoidal function. A relationship between acceleration and $\sin{\theta}$ can then be established (Figure \ref{fig:theoretical_data_sintheta_plot}):
+
+\begin{equation}
+  a \propto \sin{\theta}
+\end{equation}
+\\
+% Begin Experimental ---------------------
+\subsubsection*{Experimental}
+\label{subs:Experimental}
+
+With the above relationship, a discussion about the experimental data can now take place. Given Equation:
+
+\begin{equation}
+  d = v_0t + \frac{1}{2}at^2
+\end{equation}
+
+Above equation can be re-ordered to find the composite acceleration as a function of time ($v_0t$ is 0 because the object starts at rest):
+
+\begin{equation}
+  a(t) = \frac{2d}{t^2}
+\end{equation}
+
+\begin{table}[H]
+  \centering
+  \csvloop{
+    file={assets/Data/Experimental-Angle_Time_Acceleration_Horizontal.csv},
+    no head,              % no special treatment of first line
+    column count=10,       % since no first line is given, tell about column count
+    before reading=\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|}\hline,
+    command=\csvlinetotablerow,
+    late after line=\\\hline,
+    % late after first line=\\\hline,
+    % late after last line=\\\hline,
+    after reading=\end{tabular}
+  }
+  \caption{Experimental data with calculated acceleration}
+  \label{table:experimental_data_table_with_acceleration}
+\end{table}
+
+% Side-by-side graphs
+%
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        xlabel={$\theta$ (\textdegree)},
+        ylabel={Acceleration ($m/s^2$)},
+        xmin = 0, ymin=0,
+        scale only axis,
+        width=0.8\textwidth,
+        y label style={at={(axis description cs:0.08,.5)}},
+        ]
+        \addplot [black,mark = *] table [header=true, x=Angle, y=Acceleration, col sep=comma] {assets/Data/Experimental-All_Vertical.csv};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Acceleration vs $\theta$}
+    \label{fig:experimental_data_theta_plot}
+  \end{minipage}
+  \quad
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        xlabel={$\sin{\theta}$},
+        ylabel={Acceleration ($m/s^2$)},
+        xmin = 0, ymin=0,
+        scale only axis,
+        width=0.8\textwidth,
+        y label style={at={(axis description cs:0.08,.5)}},
+        ]
+        \addplot [only marks, mark = *] table [header=true, x=SinAngle, y=Acceleration, col sep=comma] {assets/Data/Experimental-All_Vertical.csv};
+        \addplot [black] table[
+          header=true,
+          col sep=comma,
+          x=SinAngle,
+          y={create col/linear regression={y=Acceleration}},
+        ]{assets/Data/Experimental-All_Vertical.csv};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Acceleration vs $\sin{\theta}$}
+    \label{fig:experimental_data_sintheta_plot}
+  \end{minipage}
+\end{figure}
+%
+% End Side-by-side graphs
+
+This relationship can still faintly be noticed:
+
+\begin{equation}
+  a \propto \sin{\theta}
+\end{equation}
+
+For a complete equation, a constant $k$ is needed:
+
+\begin{align}
+  a & = k\sin{\theta}\\
+  k & = \frac{a}{\sin{\theta}}
+\end{align}
+
+A table of values of $k$:
+
+\begin{table}[H]
+  \centering
+  \csvloop{
+    file={assets/Data/Experimental-k_Horizontal.csv},
+    no head,              % no special treatment of first line
+    column count=10,       % since no first line is given, tell about column count
+    before reading=\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|}\hline,
+    command=\csvlinetotablerow,
+    late after line=\\\hline,
+    % late after first line=\\\hline,
+    % late after last line=\\\hline,
+    after reading=\end{tabular}
+  }
+  \caption{Experimental Constant}
+  \label{table:experimental_k_table}
+\end{table}
+
+Friction prevents the number to stay consistent. An average of these constants will be taken to represent the trend.
+
+\begin{equation}
+  \frac{6.51 + 7.22 + 7.72 + 7.84 + 10.44 + 12.49 + 12.66 + 12.69 + 13.85}{9} = 10.16
+\end{equation}
+
+Therefore, the experimental value of $k$ is $10.16$:
+
+\begin{equation}
+  a = 10.16\sin{\theta}
+\end{equation}
+
+\subparagraph{Instantaneous Velocity and Position}
+\label{subp:Instantaneous Velocity and Position}
+At any angle, $a = 10.16\sin{\theta}$ will be a constant. This allows the addition of a new variable---time, $t$.\\
+
+Velocity is the anti-derivative of acceleration, therefore:
+
+\begin{equation}
+  v = 10.16\sin{\theta}t
+\end{equation}
+
+Position is the anti-derivative of velocity:
+
+\begin{equation}
+  s = 5.08\sin{\theta}t^2
+\end{equation}
+
+% \subparagraph{A Note on components}
+% \label{subp:A Note on components}
+% Throughout the experiment, only one force is being applied on the ball---its weight.
+%
+%
+%
+% With the given equation, $d = v_{0}t + 2at^2$, the acceleration of the ball
+% at each angle can be found as the output of a function of time:
+%
+% \begin{center}
+%   \[
+%     a(t) = \fraction{2(d-v_0t)}{t^2}
+%   \]
+% \end{center}
